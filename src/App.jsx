@@ -163,6 +163,14 @@ function Footer() {
         rel="noreferrer"
       >
         GitHub Repository
+      </a>{" "}
+      ·{" "}
+      <a
+        href="https://reactw4cs.netlify.app/"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Hosted on Netlify
       </a>
     </footer>
   );
@@ -183,7 +191,6 @@ export default function App() {
   const [days, setDays] = useState([]);
   const [error, setError] = useState("");
 
-  // Theme persistence
   const getInitialTheme = () => {
     try {
       const saved = localStorage.getItem("theme");
