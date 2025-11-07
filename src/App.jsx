@@ -12,69 +12,36 @@ const FORE = (lat, lon) =>
 
 const codeToIcon = (code) => {
   const map = {
-    0: "01d",
-    1: "02d",
-    2: "03d",
-    3: "04d",
-    45: "50d",
-    48: "50d",
-    51: "09d",
-    53: "09d",
-    55: "09d",
-    61: "10d",
-    63: "10d",
-    65: "10d",
-    66: "10d",
-    67: "10d",
-    71: "13d",
-    73: "13d",
-    75: "13d",
-    77: "13d",
-    80: "09d",
-    81: "09d",
-    82: "09d",
-    85: "13d",
-    86: "13d",
-    95: "11d",
-    96: "11d",
-    99: "11d",
+    0: "01d", 1: "02d", 2: "03d", 3: "04d",
+    45: "50d", 48: "50d",
+    51: "09d", 53: "09d", 55: "09d",
+    61: "10d", 63: "10d", 65: "10d", 66: "10d", 67: "10d",
+    71: "13d", 73: "13d", 75: "13d", 77: "13d",
+    80: "09d", 81: "09d", 82: "09d",
+    85: "13d", 86: "13d",
+    95: "11d", 96: "11d", 99: "11d"
   };
   return map[code] || "01d";
 };
 
 const codeToText = (code) => {
   const map = {
-    0: "Clear sky",
-    1: "Mainly clear",
-    2: "Partly cloudy",
-    3: "Overcast",
-    45: "Fog",
-    48: "Rime fog",
-    51: "Light drizzle",
-    53: "Drizzle",
-    55: "Dense drizzle",
-    61: "Light rain",
-    63: "Rain",
-    65: "Heavy rain",
-    66: "Freezing rain",
-    67: "Freezing rain",
-    71: "Light snow",
-    73: "Snow",
-    75: "Heavy snow",
-    77: "Snow grains",
-    80: "Light showers",
-    81: "Showers",
-    82: "Heavy showers",
-    85: "Snow showers",
-    86: "Snow showers",
-    95: "Thunderstorm",
-    96: "Thunderstorm w/ hail",
-    99: "Thunderstorm w/ hail",
+    0: "Clear sky", 1: "Mainly clear", 2: "Partly cloudy", 3: "Overcast",
+    45: "Fog", 48: "Rime fog",
+    51: "Light drizzle", 53: "Drizzle", 55: "Dense drizzle",
+    61: "Light rain", 63: "Rain", 65: "Heavy rain",
+    66: "Freezing rain", 67: "Freezing rain",
+    71: "Light snow", 73: "Snow", 75: "Heavy snow", 77: "Snow grains",
+    80: "Light showers", 81: "Showers", 82: "Heavy showers",
+    85: "Snow showers", 86: "Snow showers",
+    95: "Thunderstorm", 96: "Thunderstorm w/ hail", 99: "Thunderstorm w/ hail"
   };
   return map[code] || "Weather";
 };
 
-function Header({ query, setQuery, onSearch }) {
+// ------------------ COMPONENTS ------------------
+
+function Header({ query, setQuery, onSearch, theme, onThemeChange }) {
   return (
     <header className="header">
       <h1 className="brand">Weather App</h1>
@@ -95,21 +62,23 @@ function Header({ query, setQuery, onSearch }) {
         />
         <button type="submit">Search</button>
       </form>
+
+      <div className="theme-switch">
+        <label htmlFor="themeSel">Theme</label>
+        <select
+          id="themeSel"
+          value={theme}
+          onChange={(e) => onThemeChange(e.target.value)}
+        >
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
     </header>
   );
 }
 
-function Current({
-  city,
-  date,
-  tempDisplay,
-  unit,
-  setUnit,
-  desc,
-  icon,
-  humidity,
-  wind,
-}) {
+function Current({ city, date, tempDisplay, unit, setUnit, desc, icon, humidity, wind }) {
   return (
     <section className="current">
       <div className="current-top">
@@ -128,7 +97,7 @@ function Current({
 
       <div className="temp-row">
         <span className="temp">{tempDisplay}</span>
-        <div className="unit-toggle" role="group" aria-label="Units">
+        <div className="unit-toggle">
           <button
             type="button"
             className={`unit ${unit === "C" ? "active" : ""}`}
@@ -150,12 +119,8 @@ function Current({
       <p className="desc">{desc}</p>
 
       <ul className="details">
-        <li>
-          Humidity: <strong>{humidity != null ? humidity : "—"}%</strong>
-        </li>
-        <li>
-          Wind: <strong>{wind != null ? wind.toFixed(1) : "—"} m/s</strong>
-        </li>
+        <li>Humidity: <strong>{humidity != null ? humidity : "—"}%</strong></li>
+        <li>Wind: <strong>{wind != null ? wind.toFixed(1) : "—"} m/s</strong></li>
       </ul>
     </section>
   );
@@ -178,9 +143,7 @@ function Forecast({ days, unit }) {
             <div className="t">
               {unit === "C"
                 ? `${Math.round(d.max)}° / ${Math.round(d.min)}°`
-                : `${Math.round((d.max * 9) / 5 + 32)}° / ${Math.round(
-                    (d.min * 9) / 5 + 32
-                  )}°`}
+                : `${Math.round(d.max * 9/5 + 32)}° / ${Math.round(d.min * 9/5 + 32)}°`}
             </div>
           </div>
         ))}
@@ -195,7 +158,7 @@ function Footer() {
       <span className="rainbow">🌈</span>
       Coded by <strong>&nbsp;Camelia Simion</strong> ·{" "}
       <a
-        href="https://github.com/simcamelia/weather-app"
+        href="https://github.com/simcamelia/ReactW4CS"
         target="_blank"
         rel="noreferrer"
       >
@@ -204,6 +167,8 @@ function Footer() {
     </footer>
   );
 }
+
+// ------------------ MAIN APP ------------------
 
 export default function App() {
   const [query, setQuery] = useState("");
@@ -218,10 +183,30 @@ export default function App() {
   const [days, setDays] = useState([]);
   const [error, setError] = useState("");
 
+  // Theme persistence
+  const getInitialTheme = () => {
+    try {
+      const saved = localStorage.getItem("theme");
+      if (saved === "dark" || saved === "light") return saved;
+    } catch {}
+    return window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  };
+  const [theme, setTheme] = useState(getInitialTheme);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    try {
+      localStorage.setItem("theme", theme);
+    } catch {}
+  }, [theme]);
+
   const tempDisplay = useMemo(() => {
     if (tempC == null) return "–";
     const c = Math.round(tempC);
-    const f = Math.round((c * 9) / 5 + 32);
+    const f = Math.round(c * 9/5 + 32);
     return unit === "C" ? `${c}°` : `${f}°`;
   }, [tempC, unit]);
 
@@ -235,21 +220,13 @@ export default function App() {
         return;
       }
       const g = res[0];
-      const label = `${g.name}${g.admin1 ? ", " + g.admin1 : ""}${
-        g.country ? ", " + g.country : ""
-      }`;
+      const label = `${g.name}${g.admin1 ? ", " + g.admin1 : ""}${g.country ? ", " + g.country : ""}`;
       const fore = await axios.get(FORE(g.latitude, g.longitude));
       const cur = fore?.data?.current;
       const daily = fore?.data?.daily;
 
       setCity(label);
-      setDate(
-        new Date().toLocaleString(undefined, {
-          weekday: "long",
-          hour: "2-digit",
-          minute: "2-digit",
-        })
-      );
+      setDate(new Date().toLocaleString(undefined, { weekday:"long", hour:"2-digit", minute:"2-digit" }));
       setDesc(codeToText(cur.weather_code));
       setIcon(codeToIcon(cur.weather_code));
       setTempC(cur.temperature_2m ?? null);
@@ -259,13 +236,11 @@ export default function App() {
       const out = [];
       for (let i = 1; i < Math.min(daily.time.length, 7); i++) {
         out.push({
-          name: new Date(daily.time[i]).toLocaleDateString(undefined, {
-            weekday: "short",
-          }),
+          name: new Date(daily.time[i]).toLocaleDateString(undefined, { weekday:"short" }),
           icon: codeToIcon(daily.weather_code[i]),
           text: codeToText(daily.weather_code[i]),
           min: daily.temperature_2m_min[i],
-          max: daily.temperature_2m_max[i],
+          max: daily.temperature_2m_max[i]
         });
       }
       setDays(out);
@@ -282,7 +257,13 @@ export default function App() {
   return (
     <div className="shell">
       <div className="container">
-        <Header query={query} setQuery={setQuery} onSearch={fetchCity} />
+        <Header
+          query={query}
+          setQuery={setQuery}
+          onSearch={fetchCity}
+          theme={theme}
+          onThemeChange={setTheme}
+        />
         {error && <div className="error">{error}</div>}
         <Current
           city={city}
