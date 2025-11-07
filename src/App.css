@@ -83,3 +83,66 @@ body{
 [data-theme="dark"] .name,[data-theme="dark"] .t{color:#e5e7eb}
 [data-theme="dark"] .footer{border-top-color:#1f2937;color:#cbd5e1}
 [data-theme="dark"] .footer a{color:#93c5fd;border-bottom-color:rgba(147,197,253,.45)}
+
+/* --- Footer hover animation updates --- */
+
+.footer {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed #e5e7eb;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.footer a {
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.3s ease, background-size 0.4s ease;
+  background-image: linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6);
+  background-repeat: no-repeat;
+  background-size: 0% 2px;
+  background-position: 0 100%;
+}
+
+.footer a:hover {
+  color: #1d4ed8;
+  background-size: 100% 2px;
+}
+
+.link-github {
+  color: #2563eb;
+}
+
+.link-netlify {
+  color: #ec4899;
+}
+
+.rainbow {
+  font-size: 18px;
+  animation: rainbowGlow 3s linear infinite;
+}
+
+/* subtle rainbow emoji glow */
+@keyframes rainbowGlow {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* --- Dark mode footer variant --- */
+[data-theme="dark"] .footer {
+  border-top-color: #1f2937;
+  color: #cbd5e1;
+}
+[data-theme="dark"] .footer a {
+  background-image: linear-gradient(90deg, #93c5fd, #a78bfa, #f472b6);
+}
+[data-theme="dark"] .footer a:hover {
+  color: #93c5fd;
+}
