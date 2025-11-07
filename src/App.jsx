@@ -156,25 +156,29 @@ function Footer() {
   return (
     <footer className="footer">
       <span className="rainbow">🌈</span>
-      Coded by <strong>&nbsp;Camelia Simion</strong> ·{" "}
+      Coded by <strong>&nbsp;Camelia Simion</strong>,{" "}
       <a
         href="https://github.com/simcamelia/ReactW4CS"
         target="_blank"
         rel="noreferrer"
+        className="link-github"
       >
-        GitHub Repository
+        open-sourced on GitHub
       </a>{" "}
-      ·{" "}
+      and{" "}
       <a
         href="https://reactw4cs.netlify.app/"
         target="_blank"
         rel="noreferrer"
+        className="link-netlify"
       >
-        Hosted on Netlify
+        hosted on Netlify
       </a>
+      .
     </footer>
   );
 }
+
 
 // ------------------ MAIN APP ------------------
 
